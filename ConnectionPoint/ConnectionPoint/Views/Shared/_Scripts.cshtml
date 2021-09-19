@@ -1,0 +1,43 @@
+﻿<script src="~/plugins/jquery/jquery.min.js"></script>
+<script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/adminlte.min.js"></script>
+<script src="~/plugins/datatables/jquery.dataTables.js"></script>
+<script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+
+
+<script>
+    $(function () {
+        $('#customerTable').DataTable();
+        $('#customerDetailTable').DataTable();
+        $('#vpnTypeDetailsTable').DataTable();
+        $('#vpnTypeTable').DataTable();
+        $('#deviceTypeDetailsTable').DataTable();
+        $('#deviceTypeTable').DataTable();
+
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('.toast').toast('show');
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        //$('[class="modal"]').click(function () {
+        //    // disable button
+        //    $(this).prop("disabled", true);
+        //    // add spinner to button
+        //    $(this).html(
+        //        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> loading...`
+        //    );
+        //});
+    });
+</script>
+<script>
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
+</script>
