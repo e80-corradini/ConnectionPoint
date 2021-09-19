@@ -32,11 +32,6 @@ namespace ConnectionPoint.Security
             }
 
 
-
-            
-            
-
-
             var requiredPermissions = Permissions.Split(","); //Multiple permissiosn can be received from controller, delimiter "," is used to get individual values
             foreach (var x in requiredPermissions)
             {
