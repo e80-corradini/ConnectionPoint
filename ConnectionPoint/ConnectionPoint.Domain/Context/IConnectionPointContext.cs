@@ -1,5 +1,6 @@
 ﻿using ConnectionPoint.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace ConnectionPoint.Domain.Context
         DbSet<Vpn> Vpns { get; set; }
         DbSet<VpnType> VpnTypes { get; set; }
         DbSet<DeviceType> DeviceTypes { get; set; }
+
+        DatabaseFacade Database { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }

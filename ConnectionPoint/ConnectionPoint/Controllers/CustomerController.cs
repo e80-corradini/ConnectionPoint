@@ -2,6 +2,7 @@
 using ConnectionPoint.Domain;
 using ConnectionPoint.Domain.Context;
 using ConnectionPoint.Domain.Models;
+using ConnectionPoint.Security;
 using ConnectionPoint.Shared.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace ConnectionPoint.Controllers
 {
+    [Authorization(Permissions ="Merda")]
     public class CustomerController : Controller
     {
         protected IConnectionPointContext _context;

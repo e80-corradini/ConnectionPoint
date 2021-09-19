@@ -1,13 +1,19 @@
 using ConnectionPoint.Domain;
 using ConnectionPoint.Domain.Context;
 using ConnectionPoint.Shared;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,15 +38,30 @@ namespace ConnectionPoint
 
 
             //Configure SQL Server context
-            services.AddDbContext<IConnectionPointContext,ConnectionPointContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionPoint")));
+            services.AddDbContext<IConnectionPointContext, ConnectionPointContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionPoint")));
 
 
             //Automapper
             services.AddAutoMapper(c => c.AddProfile<AutoMapperProfile>(), typeof(Startup));
+
+
+            services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+                    .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"));
+
+
+            services.AddControllersWithViews(options =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            });
+            services.AddRazorPages()
+                    .AddMicrosoftIdentityUI();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConnectionPointContext context)
         {
 
             if (env.IsDevelopment())
@@ -60,6 +81,7 @@ namespace ConnectionPoint
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -74,6 +96,9 @@ namespace ConnectionPoint
                     template: "{controller=Home}/{action=Index}/" // Assign default page.
                 );
             });
+
+            context.Database.Migrate();
+
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using ConnectionPoint.Domain.Context;
 using ConnectionPoint.Domain.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ConnectionPoint.Domain
 {
-    public class ConnectionPointContext : DbContext, IConnectionPointContext
+    public class ConnectionPointContext : IdentityDbContext, IConnectionPointContext
     {
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Device> Devices { get; set; }
@@ -25,6 +26,8 @@ namespace ConnectionPoint.Domain
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Customer>()
                 .HasMany(x => x.Projects)
                 .WithOne(x => x.Customer)
